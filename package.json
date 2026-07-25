@@ -1,0 +1,10 @@
+{
+  "name": "checkrest-dashboard",
+  "version": "1.0.0",
+  "description": "Painel de checklists Checkrest",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y serve ."
+  },
+  "dependencies": {}
+}

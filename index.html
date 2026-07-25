@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkrest - Gestão de Checklists Operacionais</title>
+    <!-- Google Fonts - Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js para gráficos analíticos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons para iconografia premium -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="style.css?v=7">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Lateral -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">C</div>
+                    <span class="logo-text">checkrest</span>
+                </div>
+                <button class="sidebar-toggle-btn" id="btn-toggle-sidebar" aria-label="Recolher menu">
+                    <i data-lucide="chevron-left"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-view="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#checklists" class="nav-item" data-view="checklists">
+                    <i data-lucide="clipboard-check"></i>
+                    <span>Checklists</span>
+                </a>
+                <a href="#notifications" class="nav-item" data-view="notifications">
+                    <i data-lucide="bell"></i>
+                    <span>Notificações</span>
+                </a>
+                <a href="#settings" class="nav-item" data-view="settings">
+                    <i data-lucide="settings"></i>
+                    <span>Configurações</span>
+                </a>
+                <a href="#courses" class="nav-item" data-view="courses">
+                    <i data-lucide="graduation-cap"></i>
+                    <span>Cursos</span>
+                </a>
+                <a href="#help" class="nav-item" data-view="help">
+                    <i data-lucide="help-circle"></i>
+                    <span>Central de Ajuda</span>
+                </a>
+                <a href="#ideas" class="nav-item" data-view="ideas">
+                    <i data-lucide="lightbulb"></i>
+                    <span>Ideias</span>
+                </a>
+                <a href="#updates" class="nav-item" data-view="updates">
+                    <i data-lucide="megaphone"></i>
+                    <span>Atualizações</span>
+                    <span class="nav-badge" style="background:var(--color-primary-hover); color:white; font-size:10px; font-weight:700; padding:2px 6px; border-radius:10px; margin-left:auto">1</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer" style="padding: 15px; border-top: 1px solid rgba(255,255,255,0.08);">
+                <div class="sidebar-user-profile" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">Y</div>
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 12px; font-weight: 600; color: white; line-height: 1.2;">Yan Fernandes</span>
+                            <span style="font-size: 10px; color: rgba(255,255,255,0.5); line-height: 1.2;">Administrador</span>
+                        </div>
+                    </div>
+                    <a href="#logout" class="btn-logout" style="color: rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; text-decoration: none;" title="Sair">
+                        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Área Principal de Conteúdo -->
+        <div class="main-wrapper">
+            <!-- Cabeçalho Superior -->
+            <header class="main-header" style="justify-content: space-between; align-items: center; padding: 15px 30px; height: auto; min-height: 70px;">
+                <div class="header-left" style="display: flex; align-items: center; gap: 12px;">
+                    <button class="menu-mobile-btn" id="btn-mobile-menu" aria-label="Menu">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="header-title-container" style="display: flex; flex-direction: column;">
+                        <h1 class="page-title" id="page-current-title" style="margin: 0; font-size: 24px; font-weight: 800; color: var(--text-main); line-height: 1.2;">Dashboard</h1>
+                        <span class="page-subtitle" id="page-current-subtitle" style="font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 2px; line-height: 1;"></span>
+                    </div>
+                </div>
+                <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
+                    <a href="#mobile-app" class="btn btn-secondary" id="btn-header-mobile" style="display: flex; padding: 8px 14px; font-size: 13px; align-items: center; gap: 6px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: white; cursor: pointer; font-weight: 600; text-decoration: none; color: var(--text-main);">
+                        <i data-lucide="smartphone" style="width: 14px; height: 14px;"></i> Simulador App
+                    </a>
+                    <button class="btn btn-secondary" id="btn-header-customize" style="display: none; padding: 8px 14px; font-size: 13px; align-items: center; gap: 6px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: white; cursor: pointer; font-weight: 600;">
+                        <i data-lucide="sliders" style="width: 14px; height: 14px;"></i> Personalizar
+                    </button>
+                    <div class="user-profile" style="display: flex; align-items: center; gap: 10px;">
+                        <div class="user-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: #e2fbf4; color: var(--color-primary-hover); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">Y</div>
+                        <div class="user-meta" style="display: flex; flex-direction: column;">
+                            <span class="user-name" style="font-size: 13px; font-weight: 600; color: var(--text-main); line-height: 1.2;">Yan</span>
+                            <span class="user-role" style="font-size: 11px; color: var(--text-muted); line-height: 1.2;">Gestor</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Container Principal (Preenchido via JS) -->
+            <main class="main-content" id="main-content">
+                <!-- Telas dinâmicas serão injetadas aqui -->
+            </main>
+        </div>
+    </div>
+
+    <!-- Modais e Gavetas Laterais (Drawers) Globais -->
+    
+    <!-- Gaveta de Detalhes da Resposta (Dashboard Auditoria) -->
+    <div class="drawer-overlay" id="detail-drawer-overlay"></div>
+    <aside class="drawer" id="detail-drawer">
+        <div class="drawer-header">
+            <h3>Detalhe da Resposta</h3>
+            <button class="close-drawer-btn" id="btn-close-detail-drawer" aria-label="Fechar">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="drawer-body" id="detail-drawer-body">
+            <!-- Conteúdo injetado via JS -->
+        </div>
+    </aside>
+
+    <!-- Gaveta de Personalização do Dashboard -->
+    <div class="drawer-overlay" id="custom-drawer-overlay"></div>
+    <aside class="drawer" id="custom-drawer">
+        <div class="drawer-header">
+            <h3>Personalizar Dashboard</h3>
+            <button class="close-drawer-btn" id="btn-close-custom-drawer" aria-label="Fechar">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="drawer-body" id="custom-drawer-body">
+            <!-- Conteúdo injetado via JS -->
+        </div>
+    </aside>
+
+    <!-- Modal Adicionar/Editar Usuário -->
+    <div class="modal-overlay" id="user-modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="user-modal-title">Adicionar novo usuário</h3>
+                <button class="close-modal-btn" id="btn-close-user-modal" aria-label="Fechar">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="user-modal-body">
+                <!-- Conteúdo injetado via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Adicionar/Editar Unidade -->
+    <div class="modal-overlay" id="unit-modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="unit-modal-title">Adicionar nova unidade</h3>
+                <button class="close-modal-btn" id="btn-close-unit-modal" aria-label="Fechar">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="unit-modal-body">
+                <!-- Conteúdo injetado via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript da Aplicação -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js?v=2"></script>
+    <script src="js/auth.js?v=1"></script>
+    <script src="js/db.js?v=6"></script>
+    <script src="js/dashboard-custom_v4.js?v=6"></script>
+    <script src="js/dashboard_v4.js?v=7"></script>
+    <script src="js/checklists-list.js?v=6"></script>
+    <script src="js/checklist-editor.js?v=7"></script>
+    <script src="js/settings.js?v=7"></script>
+    <script src="js/mobile-app.js?v=7"></script>
+    <script src="js/extras.js?v=6"></script>
+    <script src="js/tests.js?v=6"></script>
+    <script src="js/app.js?v=6"></script>
+</body>
+</html>
