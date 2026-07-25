@@ -4,7 +4,8 @@
   "description": "Painel de checklists Checkrest",
   "main": "index.html",
   "scripts": {
-    "dev": "npx -y serve ."
+    "dev": "npx -y serve .",
+    "build": "node build.js"
   },
   "dependencies": {}
 }

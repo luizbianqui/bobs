@@ -107,8 +107,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         switch (view) {
             case 'dashboard':
-                pageTitle.textContent = "Bom dia, Yan";
-                subtitleEl.textContent = "Sexta-Feira, 1 de Maio";
+                // Saudação dinâmica baseada na hora do dia
+                const horaAtual = new Date().getHours();
+                let saudacao = "Bom dia";
+                if (horaAtual >= 12 && horaAtual < 18) {
+                    saudacao = "Boa tarde";
+                } else if (horaAtual >= 18 || horaAtual < 5) {
+                    saudacao = "Boa noite";
+                }
+                const nomeUsuario = window.__loggedUserName || "Gestor";
+                pageTitle.textContent = `${saudacao}, ${nomeUsuario}`;
+
+                // Data de hoje formatada em pt-BR (ex: "Sexta-Feira, 24 de Julho de 2026")
+                const hoje = new Date();
+                const diasSemana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
+                const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+                
+                const diaSemana = diasSemana[hoje.getDay()];
+                const dia = hoje.getDate();
+                const mes = meses[hoje.getMonth()];
+                const ano = hoje.getFullYear();
+                
+                subtitleEl.textContent = `${diaSemana}, ${dia} de ${mes} de ${ano}`;
                 customizeBtn.style.display = "flex";
                 window.renderDashboard(mainContent);
                 break;
@@ -172,6 +192,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     window.addEventListener('hashchange', navigateToView);
+    
+    // === EVENTO DE CLIQUE NOS PERFIS DO MENU ===
+    const irParaPerfil = () => {
+        if (typeof activeTab !== 'undefined') {
+            activeTab = 'users';
+        }
+        window.location.hash = '#settings';
+    };
+
+    const headerUserProfile = document.getElementById('header-user-profile');
+    if (headerUserProfile) {
+        headerUserProfile.addEventListener('click', irParaPerfil);
+    }
+
+    const sidebarUserProfile = document.getElementById('sidebar-user-profile');
+    if (sidebarUserProfile) {
+        sidebarUserProfile.addEventListener('click', irParaPerfil);
+    }
+
     navigateToView();
 
     window.addEventListener('checkrest-db-updated', () => {

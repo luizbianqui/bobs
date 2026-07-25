@@ -112,15 +112,58 @@ function atualizarBolinhasPIN() {
     }
 }
 
-function verificarPIN() {
+async function verificarPIN() {
     const db = window.getDb();
+    
+    // Obter usuário logado na sessão do navegador
+    let loggedUser = null;
+    try {
+        loggedUser = await window.getLoggedUser();
+    } catch (e) {
+        console.warn("Erro ao obter usuário logado:", e);
+    }
+
     const usuario = db.usuarios.find(u => u.pin === pinDigitado);
 
     if (usuario) {
+        // Validação de segurança:
+        if (loggedUser) {
+            if (!loggedUser.gestor) {
+                // Se o usuário logado no navegador NÃO for gestor, ele SÓ pode usar o seu próprio PIN
+                if (usuario.id !== loggedUser.id) {
+                    alert("Acesso Negado: Você só pode usar o seu próprio PIN de acesso.");
+                    pinDigitado = "";
+                    atualizarBolinhasPIN();
+                    return;
+                }
+            } else {
+                // Se o usuário logado for gestor, ele pode acessar a si mesmo ou aos operadores 
+                // que compartilham alguma unidade com ele (vínculos).
+                const mesmoUsuario = (usuario.id === loggedUser.id);
+                
+                // Verifica se compartilham alguma unidade nos vínculos
+                const temVinculoComum = usuario.vinculos && loggedUser.vinculos && 
+                    usuario.vinculos.some(uv => 
+                        loggedUser.vinculos.some(lv => lv.unidadeId === uv.unidadeId)
+                    );
+                
+                // Fallback para setores (retrocompatibilidade)
+                const temSetorComum = usuario.setores && loggedUser.setores &&
+                    usuario.setores.some(s => loggedUser.setores.includes(s));
+
+                if (!mesmoUsuario && !temVinculoComum && !temSetorComum) {
+                    alert("Acesso Negado: Este operador pertence a outra unidade/conta.");
+                    pinDigitado = "";
+                    atualizarBolinhasPIN();
+                    return;
+                }
+            }
+        }
+
         operadorLogado = usuario;
         renderizarTelaChecklists();
     } else {
-        alert("PIN incorreto! Tente usar PINs cadastrados nas Configurações (Ex: 12345, 54321).");
+        alert("PIN incorreto! Tente novamente.");
         pinDigitado = "";
         atualizarBolinhasPIN();
     }

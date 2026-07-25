@@ -46,27 +46,14 @@
                     <i data-lucide="settings"></i>
                     <span>Configurações</span>
                 </a>
-                <a href="#courses" class="nav-item" data-view="courses">
-                    <i data-lucide="graduation-cap"></i>
-                    <span>Cursos</span>
-                </a>
                 <a href="#help" class="nav-item" data-view="help">
                     <i data-lucide="help-circle"></i>
                     <span>Central de Ajuda</span>
                 </a>
-                <a href="#ideas" class="nav-item" data-view="ideas">
-                    <i data-lucide="lightbulb"></i>
-                    <span>Ideias</span>
-                </a>
-                <a href="#updates" class="nav-item" data-view="updates">
-                    <i data-lucide="megaphone"></i>
-                    <span>Atualizações</span>
-                    <span class="nav-badge" style="background:var(--color-primary-hover); color:white; font-size:10px; font-weight:700; padding:2px 6px; border-radius:10px; margin-left:auto">1</span>
-                </a>
             </nav>
             
             <div class="sidebar-footer" style="padding: 15px; border-top: 1px solid rgba(255,255,255,0.08);">
-                <div class="sidebar-user-profile" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                <div class="sidebar-user-profile" id="sidebar-user-profile" style="display: flex; align-items: center; justify-content: space-between; width: 100%; cursor: pointer;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">Y</div>
                         <div style="display: flex; flex-direction: column;">
@@ -101,7 +88,7 @@
                     <button class="btn btn-secondary" id="btn-header-customize" style="display: none; padding: 8px 14px; font-size: 13px; align-items: center; gap: 6px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: white; cursor: pointer; font-weight: 600;">
                         <i data-lucide="sliders" style="width: 14px; height: 14px;"></i> Personalizar
                     </button>
-                    <div class="user-profile" style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-profile" id="header-user-profile" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                         <div class="user-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: #e2fbf4; color: var(--color-primary-hover); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">Y</div>
                         <div class="user-meta" style="display: flex; flex-direction: column;">
                             <span class="user-name" style="font-size: 13px; font-weight: 600; color: var(--text-main); line-height: 1.2;">Yan</span>
@@ -182,15 +169,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js?v=2"></script>
     <script src="js/auth.js?v=1"></script>
-    <script src="js/db.js?v=6"></script>
+    <script src="js/db.js?v=7"></script>
     <script src="js/dashboard-custom_v4.js?v=6"></script>
-    <script src="js/dashboard_v4.js?v=7"></script>
+    <script src="js/dashboard_v4.js?v=8"></script>
     <script src="js/checklists-list.js?v=6"></script>
-    <script src="js/checklist-editor.js?v=7"></script>
-    <script src="js/settings.js?v=7"></script>
-    <script src="js/mobile-app.js?v=7"></script>
+    <script src="js/checklist-editor.js?v=8"></script>
+    <script src="js/settings.js?v=8"></script>
+    <script src="js/mobile-app.js?v=8"></script>
     <script src="js/extras.js?v=6"></script>
     <script src="js/tests.js?v=6"></script>
-    <script src="js/app.js?v=6"></script>
+    <script src="js/app.js?v=7"></script>
 </body>
 </html>

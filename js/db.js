@@ -2,6 +2,16 @@
 
 const DB_KEY = 'checkrest_db';
 
+// Retorna a data no formato local YYYY-MM-DD para evitar desvios de fuso horário (UTC)
+window.formatLocalDate = function(date) {
+    if (!date) return "";
+    const d = new Date(date);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+};
+
 // Estrutura Inicial e Dados Fictícios Ricos
 const DADOS_INICIAIS = {
     unidades: [
@@ -117,11 +127,11 @@ function gerarHistoricoExecucoes(db) {
     for (let i = 30; i >= 0; i--) {
         const dataDia = new Date(hoje);
         dataDia.setDate(hoje.getDate() - i);
-        const dataStr = dataDia.toISOString().split('T')[0];
+        const dataStr = window.formatLocalDate(dataDia);
 
         db.checklists.forEach(chk => {
             if (Math.random() > 0.15) {
-                const dataAgendamento = `${dataStr}T${chk.agendamento.horario}:00`;
+                const dataAgendamento = new Date(`${dataStr}T${chk.agendamento.horario}:00`).toISOString();
                 
                 let situacao = "Finalizado";
                 let atrasoMinutos = 0;
@@ -284,7 +294,7 @@ function initDb(forceReset = false) {
 
     if (!dbStr || forceReset) {
         const db = JSON.parse(JSON.stringify(DADOS_INICIAIS));
-        gerarHistoricoExecucoes(db);
+        // gerarHistoricoExecucoes(db); // Desativado para zerar exemplos do sistema
         localStorage.setItem(DB_KEY, JSON.stringify(db));
         return db;
     }

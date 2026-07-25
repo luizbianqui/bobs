@@ -55,8 +55,8 @@ function renderDashboard(container) {
         const hoje = new Date();
         const inicio = new Date();
         inicio.setDate(hoje.getDate() - 15);
-        filtros.periodoInicio = inicio.toISOString().split('T')[0];
-        filtros.periodoFim = hoje.toISOString().split('T')[0];
+        filtros.periodoInicio = window.formatLocalDate(inicio);
+        filtros.periodoFim = window.formatLocalDate(hoje);
     }
 
     const layoutSalvo = localStorage.getItem('checkrest_layout_widgets');
@@ -173,8 +173,8 @@ function renderDashboard(container) {
         const inicio = new Date();
         inicio.setDate(hoje.getDate() - 15);
         filtros = {
-            periodoInicio: inicio.toISOString().split('T')[0],
-            periodoFim: hoje.toISOString().split('T')[0],
+            periodoInicio: window.formatLocalDate(inicio),
+            periodoFim: window.formatLocalDate(hoje),
             unidadeId: "",
             setorId: "",
             usuarioId: "",
@@ -700,7 +700,7 @@ function renderChartEvolucao(execs) {
         for (let i = 6; i >= 0; i--) {
             const d = new Date(hoje);
             d.setDate(hoje.getDate() - i);
-            const dataStr = d.toISOString().split('T')[0];
+            const dataStr = window.formatLocalDate(d);
             datas.push(dataStr);
         }
         

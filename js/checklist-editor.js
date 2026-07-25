@@ -25,7 +25,7 @@ function renderChecklistEditor(container, checklistId = null) {
                 frequencia: "Diário",
                 repetirACada: 1,
                 horario: "08:00",
-                dataInicio: new Date().toISOString().split('T')[0],
+                dataInicio: window.formatLocalDate(new Date()),
                 dataTermino: "",
                 excecoes: []
             },

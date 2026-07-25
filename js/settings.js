@@ -1625,12 +1625,17 @@ CREATE TABLE IF NOT EXISTS execucoes (
                     <button class="btn btn-secondary" id="btn-copy-sql" style="position:absolute; top:8px; right:8px; padding:4px 8px; font-size:11px; background:rgba(255,255,255,0.1); border-color:transparent; color:#ffffff">Copiar</button>
                 </div>
 
-                <div id="seed-section" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border-color); display:${isConfigured ? 'block' : 'none'}">
-                    <h4 style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:8px">Popular Banco (Semear dados)</h4>
+                <div id="seed-section" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border-color)">
+                    <h4 style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:8px">Gerenciamento de Dados</h4>
                     <p style="font-size:12px; color:var(--text-muted); line-height:1.4; margin-bottom:12px">
-                        Se o seu banco do Supabase estiver vazio, clique no botão abaixo para carregar as filiais, usuários, checklists e histórico simulados iniciais diretamente no Supabase.
+                        Use os botões abaixo para limpar o histórico de auditorias ou semear novos dados fictícios.
                     </p>
-                    <button class="btn btn-secondary" id="btn-seed-supabase" style="width:100%; border-color:#0f766e; color:#0f766e; background:#e6fffa">
+                    
+                    <button class="btn btn-secondary" id="btn-clear-history" style="width:100%; border-color:var(--color-danger); color:var(--color-danger); background:#fff5f5; margin-bottom:10px">
+                        <i data-lucide="trash-2" style="width:14px; margin-right:6px"></i> Limpar Histórico de Auditorias
+                    </button>
+
+                    <button class="btn btn-secondary" id="btn-seed-supabase" style="width:100%; border-color:#0f766e; color:#0f766e; background:#e6fffa; display:${isConfigured ? 'inline-flex' : 'none'}">
                         <i data-lucide="database" style="width:14px; margin-right:6px"></i> Semear Dados no Supabase
                     </button>
                 </div>
@@ -1715,6 +1720,40 @@ CREATE TABLE IF NOT EXISTS execucoes (
             
             btnSeed.disabled = false;
             btnSeed.innerHTML = `<i data-lucide="database" style="width:14px; margin-right:6px"></i> Semear Dados no Supabase`;
+            lucide.createIcons();
+        });
+    }
+
+    const btnClearHistory = document.getElementById('btn-clear-history');
+    if (btnClearHistory) {
+        btnClearHistory.addEventListener('click', async () => {
+            if (!confirm("Deseja realmente limpar todo o histórico de execuções (auditorias)? Isso limpará os gráficos e tabelas de histórico.")) return;
+            
+            btnClearHistory.disabled = true;
+            btnClearHistory.innerHTML = `<i data-lucide="loader" class="animate-spin" style="width:14px; margin-right:6px"></i> Limpando histórico...`;
+            lucide.createIcons();
+            
+            try {
+                const db = window.getDb();
+                db.execucoes = [];
+                window.saveDb(db);
+                
+                if (window.isSupabaseConfigured()) {
+                    window.initSupabase();
+                    if (window.supabaseClient) {
+                        const { error } = await window.supabaseClient.from('execucoes').delete().neq('id', '_none_');
+                        if (error) throw error;
+                    }
+                }
+                
+                alert("Histórico de auditorias limpo com sucesso!");
+                window.location.hash = '#dashboard';
+            } catch (err) {
+                alert("Erro ao limpar histórico: " + err.message);
+            }
+            
+            btnClearHistory.disabled = false;
+            btnClearHistory.innerHTML = `<i data-lucide="trash-2" style="width:14px; margin-right:6px"></i> Limpar Histórico de Auditorias`;
             lucide.createIcons();
         });
     }
