@@ -1,3 +1,5 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "outputDirectory": ".",
+  "buildCommand": "node build.js"
 }
